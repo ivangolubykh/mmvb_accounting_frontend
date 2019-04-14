@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Анализатор ММВБ",
+  "name": "Персональный анализатор активов ММВБ",
   "icons": [
     {
       "src": "favicon.ico",

@@ -9,7 +9,7 @@ function IssuersAddCard( {mainParent} ) {
       <Card.Body className="text-center">
         <Card.Link href="#">
           <Card.Header>Добавить Элемент</Card.Header>
-          <Card.Img variant="ищеещь" src="images/plus_01.gif" />
+          <Card.Img variant="null" src="static/images/plus_01.gif" />
         </Card.Link>
       </Card.Body>
     </Card>
