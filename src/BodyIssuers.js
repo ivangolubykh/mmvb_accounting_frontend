@@ -14,7 +14,7 @@ function BodyIssuers( {mainParent} ) {
   const numbers = [1, 2, 3, 4, 5];
   
   const allCards = numbers.map((number) => <IssuersCard key={number} mainParent={number} />);
-  return <CardDeck><IssuersAddCard />{allCards}</CardDeck>;
+  return <CardDeck><IssuersAddCard key="add" mainParent={mainParent}/>{allCards}</CardDeck>;
 
 }
 
