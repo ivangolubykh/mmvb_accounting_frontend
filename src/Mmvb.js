@@ -51,7 +51,7 @@ class Mmvb extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="d-flex flex-column min-vh-100">
         <Header mainParent={this} />
         <Body mainParent={this} />
         {Footer}
