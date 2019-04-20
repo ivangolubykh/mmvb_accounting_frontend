@@ -10,35 +10,32 @@ import Modal from 'react-bootstrap/Modal';
 import './css/Bootstrap_4.3.1/bootstrap.css'
 import './css/RequiredTrue.css'
 
-const initalState = {
-      formData: {
-        longNameIssuer: '',
-        shortNameIssuer: '',
-        urlIssuer: '',
-        region: '',
-        address: '',
-        comment: '',
-      },
-      formValidated: false,
-      formErrors: '',
-      showAddModal: false,
-};
-
 
 class IssuersAddCard extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.cardData = props.addCardData;
     this.mainParent = props.mainParent;
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.refForm = React.createRef();
     this.refErrors = React.createRef();
-    this.state = initalState;
+    let formData = {};
+    this.cardData.fields.forEach(function(item, i, arr) {
+      formData[item.name] = item.value;
+    });
+    this.initalState = {
+      formData: formData,
+      formValidated: false,
+      formErrors: '',
+      showAddModal: false,
+    };
+    this.state = this.initalState;
   }
 
   handleClose() {
-    this.setState(initalState);
+    this.setState(this.initalState);
   }
 
   handleShow() {
@@ -62,11 +59,11 @@ class IssuersAddCard extends React.Component {
         const elem = formEl[i];
         if (elem.nodeName.toLowerCase() !== "button") {
           if ((!elem.validity.valid) && (elem.labels.length)) {
-            errrors.push(elem.labels[0].innerText + ' - ' + elem.validationMessage);
+            errrors.push([elem.labels[0].htmlFor, elem.labels[0].textContent + ' - ' + elem.validationMessage]);
           }
         }
       }
-      let formErrors = errrors.map((error) => <div>{error}</div>);
+      let formErrors = errrors.map((error) => <div key={error[0]}>{error[1]}</div>);
       this.setState({formErrors: formErrors});
     }
   }
@@ -77,7 +74,7 @@ class IssuersAddCard extends React.Component {
       console.log('state', this.state);
 
       var me = this;
-      fetch("api/get_session_data/current.json",{
+      fetch(this.cardData.url,{
         method: "POST",
         headers: {
           Accept: 'application/json',
@@ -118,14 +115,61 @@ class IssuersAddCard extends React.Component {
     }
   }
 
+  renterField(fieldData) {
+    var formControl;
+    if (fieldData.type == 'text') {
+      formControl = (
+        <Form.Control
+          onChange={e => this.changeFormValues(e)}
+          placeholder={fieldData.label}
+          required={ fieldData.required || ''}
+          type="text"
+          value={this.state.formData[fieldData.name]}
+        />
+      );
+    }
+    if (fieldData.type == 'url') {
+      formControl = (
+        <Form.Control
+          onChange={e => this.changeFormValues(e)}
+          placeholder={fieldData.label}
+          required={ fieldData.required || ''}
+          type="url"
+          value={this.state.formData[fieldData.name]}
+        />
+      );
+    }
+    else if (fieldData.type == 'textarea') {
+      formControl = (
+        <Form.Control
+          onChange={e => this.changeFormValues(e)}
+          placeholder={fieldData.label}
+          required={ fieldData.required || ''}
+          as="textarea"
+          rows={ fieldData.rows || "3" }
+          value={this.state.formData[fieldData.name]}
+        />
+      );
+    }
+
+    return (
+      <div key={fieldData.name}>
+        <Form.Group controlId={fieldData.name}>
+          <Form.Label className={ fieldData.required && "required-true" || ""}>{fieldData.label}</Form.Label>
+          {formControl}
+        </Form.Group>
+      </div>
+    )
+  }
+
   render() {
-    var me = this;
+    const fields = this.cardData.fields.map((fieldData) => this.renterField(fieldData));
     return (
       <>
         <Card border="primary" style={{ maxWidth: '640px', minWidth: '290px', marginBottom: '10px' }}>
           <Card.Body className="text-center">
             <Card.Link href="#" onClick={this.handleShow}>
-              <Card.Header>Добавить эмитента-</Card.Header>
+              <Card.Header>{this.cardData.titleCard}</Card.Header>
               <Card.Img variant="null" src="static/images/plus_01.gif" />
             </Card.Link>
           </Card.Body>
@@ -133,68 +177,12 @@ class IssuersAddCard extends React.Component {
 
         <Modal show={this.state.showAddModal} onHide={this.handleClose} backdrop='static'>
           <Modal.Header closeButton>
-            <Modal.Title>Добавить нового эмитента</Modal.Title>
+            <Modal.Title>{this.cardData.titleForm}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
             <Form validated={this.state.formValidated} ref={this.refForm}>
-              <Form.Group controlId="longNameIssuer">
-                <Form.Label className="required-true">Полное название эмитента</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Полное название эмитента"
-                  required
-                  type="text"
-                  value={this.state.formData.longNameIssuer}
-                />
-              </Form.Group>
-              <Form.Group controlId="shortNameIssuer">
-                <Form.Label className="required-true">Короткое название эмитента</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Короткое название эмитента"
-                  required
-                  type="text"
-                  value={this.state.formData.shortNameIssuer}
-                />
-              </Form.Group>
-              <Form.Group controlId="urlIssuer">
-                <Form.Label className="required-true">Сайт эмитента</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Сайт эмитента"
-                  required
-                  type="url"
-                  value={this.state.formData.urlIssuer}
-                />
-              </Form.Group>
-              <Form.Group controlId="region">
-                <Form.Label>Регион (субъект РФ)</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Регион (субъект РФ)"
-                  type="text"
-                  value={this.state.formData.region}
-                />
-              </Form.Group>
-              <Form.Group controlId="address">
-                <Form.Label>Адрес</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Адрес"
-                  type="text"
-                  value={this.state.formData.address}
-                />
-              </Form.Group>
-              <Form.Group controlId="comment">
-                <Form.Label>Комментарий</Form.Label>
-                <Form.Control
-                  onChange={e => this.changeFormValues(e)}
-                  placeholder="Комментарий"
-                   as="textarea" rows="3"
-                  value={this.state.formData.comment}
-                />
-              </Form.Group>
+              {fields}
               <Form.Text>
                 <Alert variant={ this.state.formValidated ? 'success' : 'danger' }>* Эти поля обязательны для заполнения.
                 <br />
