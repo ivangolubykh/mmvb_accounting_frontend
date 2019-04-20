@@ -8,15 +8,19 @@ import Modal from 'react-bootstrap/Modal';
 
 // https://react-bootstrap.github.io/getting-started/introduction/  -> Stylesheets
 import './css/Bootstrap_4.3.1/bootstrap.css'
-
+import './css/RequiredTrue.css'
 
 const initalState = {
       formData: {
         longNameIssuer: '',
         shortNameIssuer: '',
         urlIssuer: '',
+        region: '',
+        address: '',
+        comment: '',
       },
       formValidated: false,
+      formErrors: '',
       showAddModal: false,
 };
 
@@ -29,6 +33,7 @@ class IssuersAddCard extends React.Component {
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.refForm = React.createRef();
+    this.refErrors = React.createRef();
     this.state = initalState;
   }
 
@@ -44,11 +49,25 @@ class IssuersAddCard extends React.Component {
     var formData = Object.assign({}, this.state.formData);
     formData[event.target.id] = event.target.value;
     this.setState({formData: formData});
-    if (this.refForm.current.checkValidity() === true) {
-      this.setState({formValidated: true});
+    const formEl = this.refForm.current;
+    if (formEl.checkValidity() === true) {
+      this.setState({formValidated: true, formErrors: ''});
     }
     else {
+      var errrors = [];
       this.setState({formValidated: false});
+      const formLength = formEl.length;
+      const errorLabel = this.refErrors.current;
+      for (let i = 0; i < formLength; i++) {
+        const elem = formEl[i];
+        if (elem.nodeName.toLowerCase() !== "button") {
+          if ((!elem.validity.valid) && (elem.labels.length)) {
+            errrors.push(elem.labels[0].innerText + ' - ' + elem.validationMessage);
+          }
+        }
+      }
+      let formErrors = errrors.map((error) => <div>{error}</div>);
+      this.setState({formErrors: formErrors});
     }
   }
 
@@ -120,27 +139,27 @@ class IssuersAddCard extends React.Component {
 
             <Form validated={this.state.formValidated} ref={this.refForm}>
               <Form.Group controlId="longNameIssuer">
-                <Form.Label>Полное название эмитента</Form.Label>
+                <Form.Label className="required-true">Полное название эмитента</Form.Label>
                 <Form.Control
                   onChange={e => this.changeFormValues(e)}
-                  placeholder="Название эмитента"
+                  placeholder="Полное название эмитента"
                   required
                   type="text"
                   value={this.state.formData.longNameIssuer}
                 />
               </Form.Group>
               <Form.Group controlId="shortNameIssuer">
-                <Form.Label>Короткое название эмитента</Form.Label>
+                <Form.Label className="required-true">Короткое название эмитента</Form.Label>
                 <Form.Control
                   onChange={e => this.changeFormValues(e)}
-                  placeholder="Название эмитента"
+                  placeholder="Короткое название эмитента"
                   required
                   type="text"
                   value={this.state.formData.shortNameIssuer}
                 />
               </Form.Group>
               <Form.Group controlId="urlIssuer">
-                <Form.Label>Сайт эмитента</Form.Label>
+                <Form.Label className="required-true">Сайт эмитента</Form.Label>
                 <Form.Control
                   onChange={e => this.changeFormValues(e)}
                   placeholder="Сайт эмитента"
@@ -149,8 +168,38 @@ class IssuersAddCard extends React.Component {
                   value={this.state.formData.urlIssuer}
                 />
               </Form.Group>
+              <Form.Group controlId="region">
+                <Form.Label>Регион (субъект РФ)</Form.Label>
+                <Form.Control
+                  onChange={e => this.changeFormValues(e)}
+                  placeholder="Регион (субъект РФ)"
+                  type="text"
+                  value={this.state.formData.region}
+                />
+              </Form.Group>
+              <Form.Group controlId="address">
+                <Form.Label>Адрес</Form.Label>
+                <Form.Control
+                  onChange={e => this.changeFormValues(e)}
+                  placeholder="Адрес"
+                  type="text"
+                  value={this.state.formData.address}
+                />
+              </Form.Group>
+              <Form.Group controlId="comment">
+                <Form.Label>Комментарий</Form.Label>
+                <Form.Control
+                  onChange={e => this.changeFormValues(e)}
+                  placeholder="Комментарий"
+                   as="textarea" rows="3"
+                  value={this.state.formData.comment}
+                />
+              </Form.Group>
               <Form.Text>
-                <Alert variant={ this.state.formValidated ? 'success' : 'danger' }>* Все поля обязательны для заполнения.</Alert>
+                <Alert variant={ this.state.formValidated ? 'success' : 'danger' }>* Эти поля обязательны для заполнения.
+                <br />
+                <div ref={this.refErrors}>{this.state.formErrors}</div>
+                </Alert>
               </Form.Text>
             </Form>
 

@@ -1,0 +1,5 @@
+/* RequiredTrue.css */
+.required-true:after {
+  content: "*";
+  color: maroon;
+}
