@@ -3,7 +3,7 @@ import React from 'react';
 import CardGroup from 'react-bootstrap/CardGroup';
 import CardDeck from 'react-bootstrap/CardDeck';
 import IssuersCard from './IssuersCard';
-import IssuersAddCard from './IssuersAddCard';
+import AddCard from './AddCard';
 
 
 
@@ -67,7 +67,7 @@ function BodyIssuers( {mainParent} ) {
   }
 
   const allCards = numbers.map((number) => <IssuersCard key={number} mainParent={number} />);
-  return <CardDeck><IssuersAddCard key="add" addCardData={addCardData} mainParent={mainParent}/>{allCards}</CardDeck>;
+  return <CardDeck><AddCard key="add" addCardData={addCardData} mainParent={mainParent}/>{allCards}</CardDeck>;
 
 }
 

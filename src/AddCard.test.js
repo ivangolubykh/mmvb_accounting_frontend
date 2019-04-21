@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IssuersAddCard from './IssuersAddCard';
+import AddCard from './AddCard';
 
 const addCardData = {
   "title": "Добавить нового эмитента",
@@ -30,6 +30,6 @@ const addCardData = {
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<IssuersAddCard addCardData={addCardData} />, div);
+  ReactDOM.render(<AddCard addCardData={addCardData} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
