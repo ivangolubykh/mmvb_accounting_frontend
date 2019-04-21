@@ -1,10 +1,10 @@
 const initialState = {
-  currentPage: "home",
+  currentPage: "",
   isLoaded: false,
   isLogin: false,
   loginUrl: "api/api-auth/login/?next=/",
   logoutUrl: "api/api-auth/logout/",
-  userName: "NowName",
+  userName: "",
 };
 
 

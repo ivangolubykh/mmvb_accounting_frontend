@@ -121,7 +121,7 @@ class IssuersAddCard extends React.Component {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
-          placeholder={fieldData.label}
+          placeholder={fieldData.placeholder || fieldData.label}
           required={ fieldData.required || ''}
           type="text"
           value={this.state.formData[fieldData.name]}
@@ -132,7 +132,7 @@ class IssuersAddCard extends React.Component {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
-          placeholder={fieldData.label}
+          placeholder={fieldData.placeholder || ''}
           required={ fieldData.required || ''}
           type="url"
           value={this.state.formData[fieldData.name]}
@@ -143,7 +143,7 @@ class IssuersAddCard extends React.Component {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
-          placeholder={fieldData.label}
+          placeholder={fieldData.placeholder || fieldData.label}
           required={ fieldData.required || ''}
           as="textarea"
           rows={ fieldData.rows || "3" }
@@ -168,7 +168,7 @@ class IssuersAddCard extends React.Component {
       <>
         <Card border="primary" style={{ maxWidth: '640px', minWidth: '290px', marginBottom: '10px' }}>
           <Card.Body className="text-center">
-            <Card.Link href="#" onClick={this.handleShow}>
+            <Card.Link href={this.mainParent.state.currentPage} onClick={this.handleShow}>
               <Card.Header>{this.cardData.titleCard}</Card.Header>
               <Card.Img variant="null" src="static/images/plus_01.gif" />
             </Card.Link>
