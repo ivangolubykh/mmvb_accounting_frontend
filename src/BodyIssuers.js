@@ -1,13 +1,10 @@
 import React from 'react';
 
-import CardGroup from 'react-bootstrap/CardGroup';
 import CardDeck from 'react-bootstrap/CardDeck';
-import IssuersCard from './IssuersCard';
+
 import AddCard from './AddCard';
+import IssuersCard from './IssuersCard';
 
-
-
-import Card from 'react-bootstrap/Card';
 
 function BodyIssuers( {mainParent} ) {
 

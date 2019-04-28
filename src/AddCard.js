@@ -11,7 +11,7 @@ import './css/Bootstrap_4.3.1/bootstrap.css'
 import './css/RequiredTrue.css'
 
 
-class IssuersAddCard extends React.Component {
+class AddCard extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -54,7 +54,6 @@ class IssuersAddCard extends React.Component {
       var errrors = [];
       this.setState({formValidated: false});
       const formLength = formEl.length;
-      const errorLabel = this.refErrors.current;
       for (let i = 0; i < formLength; i++) {
         const elem = formEl[i];
         if (elem.nodeName.toLowerCase() !== "button") {
@@ -117,7 +116,7 @@ class IssuersAddCard extends React.Component {
 
   renterField(fieldData) {
     var formControl;
-    if (fieldData.type == 'text') {
+    if (fieldData.type === 'text') {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
@@ -128,7 +127,7 @@ class IssuersAddCard extends React.Component {
         />
       );
     }
-    if (fieldData.type == 'url') {
+    if (fieldData.type === 'url') {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
@@ -139,7 +138,7 @@ class IssuersAddCard extends React.Component {
         />
       );
     }
-    else if (fieldData.type == 'textarea') {
+    else if (fieldData.type === 'textarea') {
       formControl = (
         <Form.Control
           onChange={e => this.changeFormValues(e)}
@@ -155,7 +154,7 @@ class IssuersAddCard extends React.Component {
     return (
       <div key={fieldData.name}>
         <Form.Group controlId={fieldData.name}>
-          <Form.Label className={ fieldData.required && "required-true" || ""}>{fieldData.label}</Form.Label>
+          <Form.Label className={ ( fieldData.required && "required-true" ) || ""}>{fieldData.label}</Form.Label>
           {formControl}
         </Form.Group>
       </div>
@@ -207,4 +206,4 @@ class IssuersAddCard extends React.Component {
 }
 
 
-export default IssuersAddCard;
+export default AddCard;

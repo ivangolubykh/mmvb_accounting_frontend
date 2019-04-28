@@ -12,7 +12,7 @@ import './css/Bootstrap_4.3.1/bootstrap.css'
 class Mmvb extends React.Component {
   constructor(props) {
     super(props);
-    initialState["currentPage"] = window.location.hash
+    initialState["currentPage"] = window.location.hash || '#home'
     this.state = initialState;
   }
 

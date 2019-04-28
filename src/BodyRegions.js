@@ -2,19 +2,15 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 import CardDeck from 'react-bootstrap/CardDeck';
-import CardGroup from 'react-bootstrap/CardGroup';
 import Image from 'react-bootstrap/Image';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
-import IssuersCard from './IssuersCard';
 import AddCard from './AddCard';
+import IssuersCard from './IssuersCard';
 
-function aaa( {mainParent} ) {
-  console.log('ddd')
-}
 
-function BodyIssuers( {mainParent} ) {
+function BodyRegions( {mainParent} ) {
 
 
   const numbers = [1, 2, 3, 4, 5];
@@ -87,7 +83,7 @@ function BodyIssuers( {mainParent} ) {
   const popoverAddRegionHelp = (
     <Popover id="popover-basic" title="Полезная информация" style={{ maxWidth: '75%' }}>
       Данные о регионах необходимо брать на официальном сайте ФИАС.
-      Архив полной базы адресов <a target="_blank" href="https://fias.nalog.ru/"><strong>ФИАС</strong></a> весит 6 Гб,
+      Архив полной базы адресов <a target="_blank" rel="noopener noreferrer" href="https://fias.nalog.ru/"><strong>ФИАС</strong></a> весит 6 Гб,
       поэтому её полная интеграция для домашнего использования признана нецелесообразной.
     </Popover>
   );
@@ -110,4 +106,4 @@ function BodyIssuers( {mainParent} ) {
 }
 
 
-export default BodyIssuers;
+export default BodyRegions;
