@@ -10,98 +10,139 @@ import AddCard from './AddCard';
 import IssuersCard from './IssuersCard';
 
 
-function BodyRegions( {mainParent} ) {
-
-
-  const numbers = [1, 2, 3, 4, 5];
-
-
-  const addCardData = {
-    "titleCard": "Добавить Регион",
-    "titleForm": "Добавить новый регион (субъект РФ)",
-    "url": "api/region_fias/add.json",
-    "fields": [
-      {
-        "name": "adminDivisionName",
-        "label": "Муниципальное название",
-        "placeholder": "Город Санкт-Петербург",
-        "required": true,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "shortNameIssuer",
-        "label": "Административное название",
-        "placeholder": "Санкт-Петербург город",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "codeOkato",
-        "label": "Код ОКАТО",
-        "placeholder": "40000000000",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "codeOktmo",
-        "label": "Код ОКТМО",
-        "placeholder": "40000000",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "codePostal",
-        "label": "Почтовый индекс",
-        "placeholder": "190000",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "stateAddressRegister",
-        "label": "Уникальный номер в государственном адресном реестре",
-        "placeholder": "C2DEB16A-0330-4F05-821F-1D09C93331E6",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "comment",
-        "label": "Комментарий",
-        "required": false,
-        "type": "textarea",
-        "rows": "3",  // only for textarea type
-        "value": "",
-      },
-    ],
+class BodyRegions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.mainParent = props.mainParent;
+    this.initialState = {cards: []};
+    this.state = this.initialState;
   }
 
-  const popoverAddRegionHelp = (
-    <Popover id="popover-basic" title="Полезная информация" style={{ maxWidth: '75%' }}>
-      Данные о регионах необходимо брать на официальном сайте ФИАС.
-      Архив полной базы адресов <a target="_blank" rel="noopener noreferrer" href="https://fias.nalog.ru/"><strong>ФИАС</strong></a> весит 6 Гб,
-      поэтому её полная интеграция для домашнего использования признана нецелесообразной.
-    </Popover>
-  );
-  const HelpAddRegion = () => (
-    <div  className="row justify-content-end" style={{ margin: '5px' }}>
-    <OverlayTrigger trigger="click" placement="left" overlay={popoverAddRegionHelp}>
-      <Button variant="light"><Image src="static/images/icons/info_16x16.gif" /></Button>
-    </OverlayTrigger>
-    </div>
-  );
-  const allCards = numbers.map((number) => <IssuersCard key={number} mainParent={number} />);
+  componentDidMount() {
+    this.reload();
+  }
 
-  return (
-    <>
-      <HelpAddRegion />
-      <CardDeck><AddCard key="add" addCardData={addCardData} mainParent={mainParent}/>{allCards}</CardDeck>
-    </>
-  );
+  reload() {
+    const me = this;
+    fetch("api/region_fias.json")
+      .then((response) => {
+        if (response.status !== 200) {
+          me.resetState();
+          return;
+        }
+        return response.json()
+      })
+      .then((response) => {
+        if (response) {
+          this.setState({cards: response});
+        }
+      })
+      .then((error) => {
+        if (error) {
+          me.resetState();
+          this.setState({error});
+        }
+      })
+      .catch(function(ex) {
+        console.log('parsing failed', ex);
+        me.resetState();
+      });
+  }
+
+  resetState() {
+    this.setState(this.initialState);
+  }
+
+  render() {
+    const me = this;
+
+    const addCardData = {
+      "titleCard": "Добавить Регион",
+      "titleForm": "Добавить новый регион (субъект РФ)",
+      "url": "api/region_fias.json",
+      "fields": [
+        {
+          "name": "munitipal_name",
+          "label": "Муниципальное название",
+          "placeholder": "Город Санкт-Петербург",
+          "required": true,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "administrative_name",
+          "label": "Административное название",
+          "placeholder": "Санкт-Петербург город",
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "okato_code",
+          "label": "Код ОКАТО",
+          "placeholder": "40000000000",
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "oktmo_code",
+          "label": "Код ОКТМО",
+          "placeholder": "40000000",
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "postcode",
+          "label": "Почтовый индекс",
+          "placeholder": "190000",
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "state_uuid",
+          "label": "Уникальный номер в государственном адресном реестре",
+          "placeholder": "C2DEB16A-0330-4F05-821F-1D09C93331E6",
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "comment",
+          "label": "Комментарий",
+          "required": false,
+          "type": "textarea",
+          "rows": "3",  // only for textarea type
+          "value": "",
+        },
+      ],
+    }
+
+    const popoverAddRegionHelp = (
+      <Popover id="popover-basic" title="Полезная информация" style={{ maxWidth: '75%' }}>
+        Данные о регионах необходимо брать на официальном сайте ФИАС.
+        Архив полной базы адресов <a target="_blank" rel="noopener noreferrer" href="https://fias.nalog.ru/"><strong>ФИАС</strong></a> весит 6 Гб,
+        поэтому её полная интеграция для домашнего использования признана нецелесообразной.
+      </Popover>
+    );
+    const HelpAddRegion = () => (
+      <div  className="row justify-content-end" style={{ margin: '5px' }}>
+      <OverlayTrigger trigger="click" placement="left" overlay={popoverAddRegionHelp}>
+        <Button variant="light"><Image src="static/images/icons/info_16x16.gif" /></Button>
+      </OverlayTrigger>
+      </div>
+    );
+    const allCards = this.state.cards.map((number) => <IssuersCard key={number.url} mainParent={me.mainParent} />);
+
+    return (
+      <>
+        <HelpAddRegion />
+        <CardDeck><AddCard key="add" addCardData={addCardData} parent={me} mainParent={me.mainParent}/>{allCards}</CardDeck>
+      </>
+    );
+  }
 
 }
 

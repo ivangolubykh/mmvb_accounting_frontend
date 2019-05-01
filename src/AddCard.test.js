@@ -7,7 +7,7 @@ import initialState from './initialState';
 
 const addCardData = {
   "title": "Добавить нового эмитента",
-  "url": "api/get_session_data/current.json",
+  "url": "test.json",
   "fields": [
     {
       "name": "textField",

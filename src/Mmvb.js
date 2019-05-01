@@ -21,7 +21,7 @@ class Mmvb extends React.Component {
   }
 
   componentDidMount() {
-    var me = this;
+    const me = this;
     fetch("api/get_session_data/current.json")
       .then((response) => {
         if (response.status !== 200) {

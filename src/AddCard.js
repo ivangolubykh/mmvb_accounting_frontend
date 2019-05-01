@@ -9,14 +9,16 @@ import Modal from 'react-bootstrap/Modal';
 // https://react-bootstrap.github.io/getting-started/introduction/  -> Stylesheets
 import './css/Bootstrap_4.3.1/bootstrap.css'
 import './css/RequiredTrue.css'
+import get_cookie from './utils/get_cookie'
 
 
 class AddCard extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.cardData = props.addCardData;
     this.mainParent = props.mainParent;
+    this.parent = props.parent;
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.refForm = React.createRef();
@@ -69,52 +71,54 @@ class AddCard extends React.Component {
 
   handleSubmit(event) {
     if (this.refForm.current.checkValidity() === true) {
-      console.log('Время отправляеть форму');
-      console.log('state', this.state);
+      const me = this;
+      var formData  = new FormData();
+      for(var name in this.state.formData) {
+        formData.append(name, this.state.formData[name]);
+      }
 
-      var me = this;
       fetch(this.cardData.url,{
         method: "POST",
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
+          'X-CSRFToken': get_cookie('csrftoken'),
         },
-        body:  JSON.stringify(this.state.formData),
+        body: formData,
       })
         .then((response) => {
-          if (response.status !== 200) {
-
-            // me.resetState();
-
+          if (response.status === 201) {
+            me.resetState();
+            me.parent.reload();
             return;
           }
-          return response.json()
+          else if (response.status === 400) {
+            return response.json();
+          }
+          return;
         })
         .then((response) => {
           if (response) {
-            // this.setState({isLoaded: true});
-            // this.setState({isLogin: true});
-            // this.setState({userName: response.first_name});
-            // this.setState({items: response});
+            const keys = Object.keys(response);
+            let formErrors = keys.map((key) => <div key={key}>{response[key]}</div>);
+            this.setState({formErrors: formErrors, formValidated: false});
+          }
+          else {
+            me.resetState();
           }
         })
         .then((error) => {
           if (error) {
-
-            // me.resetState();
-            // this.setState({error});
+            console.log('error', error);
           }
         })
         .catch(function(ex) {
           console.log('parsing failed', ex);
-          // me.resetState();
+          me.resetState();
         })
-
-
     }
   }
 
-  renterField(fieldData) {
+  renderField(fieldData) {
     var formControl;
     if (fieldData.type === 'text') {
       formControl = (
@@ -161,8 +165,12 @@ class AddCard extends React.Component {
     )
   }
 
+  resetState() {
+    this.setState(this.initalState);
+  }
+
   render() {
-    const fields = this.cardData.fields.map((fieldData) => this.renterField(fieldData));
+    const fields = this.cardData.fields.map((fieldData) => this.renderField(fieldData));
     return (
       <>
         <Card border="primary" style={{ maxWidth: '640px', minWidth: '290px', marginBottom: '10px' }}>
