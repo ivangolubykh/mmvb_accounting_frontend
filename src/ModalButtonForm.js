@@ -12,19 +12,24 @@ import './css/RequiredTrue.css'
 import get_cookie from './utils/get_cookie'
 
 
-class AddCard extends React.Component {
+class ModalButtonForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.cardData = props.addCardData;
-    this.mainParent = props.mainParent;
-    this.parent = props.parent;
+    // this.data = props.data;
+    this.currentPage = props.currentPage;
+    this.formData = props.formData;
+    this.icon = props.icon;
+
+
+    // this.mainParent = props.mainParent;
+    // this.parent = props.parent;
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.refForm = React.createRef();
-    this.refErrors = React.createRef();
+  //   this.refErrors = React.createRef();
     let formData = {};
-    this.cardData.fields.forEach(function(item, i, arr) {
+    this.formData.fields.forEach(function(item, i, arr) {
       formData[item.name] = item.value;
     });
     this.initalState = {
@@ -170,21 +175,14 @@ class AddCard extends React.Component {
   }
 
   render() {
-    const fields = this.cardData.fields.map((fieldData) => this.renderField(fieldData));
+    const fields = this.formData.fields.map((fieldData) => this.renderField(fieldData));
     return (
       <>
-        <Card border="primary" style={{ maxWidth: '640px', minWidth: '290px', marginBottom: '10px' }}>
-          <Card.Body className="text-center">
-            <Card.Link href={this.mainParent.state.currentPage} onClick={this.handleShow}>
-              <Card.Header>{this.cardData.titleCard}</Card.Header>
-              <Card.Img variant="null" src="static/images/plus_01.gif" />
-            </Card.Link>
-          </Card.Body>
-        </Card>
+        <button onClick={this.handleShow} style={{ margin: '3px' }}>{this.icon ? this.icon : ''}{this.formData.titleLink}</button>
 
         <Modal show={this.state.showAddModal} onHide={this.handleClose} backdrop='static'>
           <Modal.Header closeButton>
-            <Modal.Title>{this.cardData.titleForm}</Modal.Title>
+            <Modal.Title>{this.formData.titleForm}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
@@ -214,4 +212,4 @@ class AddCard extends React.Component {
 }
 
 
-export default AddCard;
+export default ModalButtonForm;

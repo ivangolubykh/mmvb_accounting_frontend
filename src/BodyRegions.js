@@ -7,7 +7,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
 import AddCard from './AddCard';
-import IssuersCard from './IssuersCard';
+import RegionsCard from './RegionsCard';
 
 
 class BodyRegions extends React.Component {
@@ -134,7 +134,7 @@ class BodyRegions extends React.Component {
       </OverlayTrigger>
       </div>
     );
-    const allCards = this.state.cards.map((number) => <IssuersCard key={number.url} mainParent={me.mainParent} />);
+    const allCards = this.state.cards.map((region) => <RegionsCard key={region.url} data={region} mainParent={me.mainParent} />);
 
     return (
       <>
