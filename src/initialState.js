@@ -2,8 +2,8 @@ const initialState = {
   currentPage: "",
   isLoaded: false,
   isLogin: false,
-  loginUrl: "api/api-auth/login/?next=/",
-  logoutUrl: "api/api-auth/logout/",
+  loginUrl: "api-auth/login/",
+  logoutUrl: "api-auth/logout/",
   userName: "",
 };
 

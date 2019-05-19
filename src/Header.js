@@ -12,6 +12,14 @@ import './css/Bootstrap_4.3.1/bootstrap.css'
 
 
 function Header( {mainParent} ) {
+  let currentPage = mainParent.state.currentPage.split('');
+  if (currentPage[0] === "#") {
+    currentPage[0] = "%23"
+  }
+  currentPage = currentPage.join('');
+  const loginUrl = mainParent.state.loginUrl + '?next=/' + currentPage;
+  const logoutUrl = mainParent.state.logoutUrl + '?next=/' + currentPage;
+
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="#home" onClick={() => mainParent.setState({currentPage: "home"})}>ММВБ Анализатор</Navbar.Brand>
@@ -30,9 +38,9 @@ function Header( {mainParent} ) {
             <NavDropdown.Item href="#action/3.4" onClick={(e) => mainParent.setState({currentPage: "#action/3.1"})}>Управление Эмитентами</NavDropdown.Item>
           </NavDropdown>
         </Nav>
-        { !mainParent.state.isLogin && <Button variant="outline-success" href={mainParent.state.loginUrl}>Log In</Button>}
+        { !mainParent.state.isLogin && <Button variant="outline-success" href={loginUrl}>Log In</Button>}
         { mainParent.state.isLogin && <Navbar.Brand>Здравствуй {mainParent.state.userName}</Navbar.Brand>}
-        { mainParent.state.isLogin && <Button variant="outline-success" href={mainParent.state.logoutUrl}>Log Out</Button>}
+        { mainParent.state.isLogin && <Button variant="outline-success" href={logoutUrl}>Log Out</Button>}
       </Navbar.Collapse>
     </Navbar>
   )
