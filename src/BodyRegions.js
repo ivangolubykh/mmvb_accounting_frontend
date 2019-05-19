@@ -34,7 +34,8 @@ class BodyRegions extends React.Component {
       })
       .then((response) => {
         if (response) {
-          this.setState({cards: response});
+          me.setState({cards: []});
+          me.setState({cards: response});
         }
       })
       .then((error) => {
@@ -134,7 +135,7 @@ class BodyRegions extends React.Component {
       </OverlayTrigger>
       </div>
     );
-    const allCards = this.state.cards.map((region) => <RegionsCard key={region.url} data={region} mainParent={me.mainParent} />);
+    const allCards = this.state.cards.map((region) => <RegionsCard key={region.url} data={region} mainParent={me.mainParent} parent={me}/>);
 
     return (
       <>

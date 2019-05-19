@@ -15,19 +15,24 @@ import get_cookie from './utils/get_cookie'
 class ModalButtonForm extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.data = props.data;
     this.currentPage = props.currentPage;
-    this.formData = props.formData;
     this.icon = props.icon;
-
-
-    // this.mainParent = props.mainParent;
-    // this.parent = props.parent;
-    this.handleShow = this.handleShow.bind(this);
+    this.formData = props.formData;
     this.handleClose = this.handleClose.bind(this);
-    this.refForm = React.createRef();
-  //   this.refErrors = React.createRef();
+    this.handleShow = this.handleShow.bind(this);
+    this.data_parent = props.data_parent;
+    this.refForm = null;
+    this.refFormFunc = element => {
+      if (element) {
+        this.refForm = element;
+        if (this.refForm.checkValidity()) {
+          this.setState({formValidated: true, formErrors: ''});
+        }
+        else {
+          this.setState({formValidated: false});
+        }
+      }
+    };
     let formData = {};
     this.formData.fields.forEach(function(item, i, arr) {
       formData[item.name] = item.value;
@@ -53,7 +58,7 @@ class ModalButtonForm extends React.Component {
     var formData = Object.assign({}, this.state.formData);
     formData[event.target.id] = event.target.value;
     this.setState({formData: formData});
-    const formEl = this.refForm.current;
+    const formEl = this.refForm;
     if (formEl.checkValidity() === true) {
       this.setState({formValidated: true, formErrors: ''});
     }
@@ -75,56 +80,51 @@ class ModalButtonForm extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.refForm.current.checkValidity() === true) {
+    if (this.refForm.checkValidity() === true) {
       const me = this;
       var formData  = new FormData();
       for(var name in this.state.formData) {
         formData.append(name, this.state.formData[name]);
       }
 
-      fetch(this.cardData.url,{
+      fetch(this.formData.url,{
         method: "POST",
         headers: {
           Accept: 'application/json',
           'X-CSRFToken': get_cookie('csrftoken'),
         },
         body: formData,
-      })
-        .then((response) => {
-          if (response.status === 201) {
-            me.resetState();
-            me.parent.reload();
+      }).then((response) => {
+          if ( (response.status === 200) || (response.status === 201) ) {
+            me.data_parent.reload();
             return;
           }
           else if (response.status === 400) {
             return response.json();
           }
           return;
-        })
-        .then((response) => {
+      }).then((response) => {
           if (response) {
             const keys = Object.keys(response);
             let formErrors = keys.map((key) => <div key={key}>{response[key]}</div>);
             this.setState({formErrors: formErrors, formValidated: false});
           }
-          else {
-            me.resetState();
-          }
-        })
-        .then((error) => {
+      }).then((error) => {
           if (error) {
             console.log('error', error);
           }
-        })
-        .catch(function(ex) {
+      }).catch(function(ex) {
           console.log('parsing failed', ex);
           me.resetState();
-        })
+      })
     }
   }
 
   renderField(fieldData) {
     var formControl;
+    if (fieldData.type === 'pk') {
+      return;
+    }
     if (fieldData.type === 'text') {
       formControl = (
         <Form.Control
@@ -186,7 +186,7 @@ class ModalButtonForm extends React.Component {
           </Modal.Header>
           <Modal.Body>
 
-            <Form validated={this.state.formValidated} ref={this.refForm}>
+            <Form validated={this.state.formValidated} ref={this.refFormFunc}>
               {fields}
               <Form.Text>
                 <Alert variant={ this.state.formValidated ? 'success' : 'danger' }>* Эти поля обязательны для заполнения.
