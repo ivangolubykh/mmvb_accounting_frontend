@@ -1,12 +1,9 @@
 import React from 'react';
 
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 
-import ModalButtonForm from './ModalButtonForm';
+import ModalDelButtonForm from './ModalDelButtonForm';
+import ModalEditButtonForm from './ModalEditButtonForm';
 
 
 class RegionsCard extends React.Component {
@@ -23,16 +20,7 @@ class RegionsCard extends React.Component {
         "titleLink": "Удалить",
         "titleForm": "Удалить регион (субъект РФ) из БД",
         "url": this.data.url,
-        "fields": [
-          {
-            "name": "munitipal_name",
-            "label": "Муниципальное название",
-            "placeholder": "Город Санкт-Петербург",
-            "required": true,
-            "type": "text",
-            "value": this.data.munitipal_name,
-          },
-        ],
+        "cardName": this.data.munitipal_name,
       },
       editFormData: {
         "titleLink": "Редактировать",
@@ -130,13 +118,13 @@ class RegionsCard extends React.Component {
             <Card.Text>{this.data.comment}</Card.Text>
           </Card.Body>
           <Card.Footer className="text-muted">
-            <ModalButtonForm
+            <ModalEditButtonForm
               currentPage={this.currentPage}
               icon={<Card.Img variant="null" src="/static/images/icons/edit_32x32.gif" style={{ marginRight: 5 }} />}
               formData={this.state.editFormData}
               data_parent={this.data_parent}
             />
-            <ModalButtonForm
+            <ModalDelButtonForm
               currentPage={this.currentPage}
               icon={<Card.Img variant="null" src="/static/images/icons/delete_32x32.gif" style={{ marginRight: 5 }} />}
               formData={this.state.delFormData}

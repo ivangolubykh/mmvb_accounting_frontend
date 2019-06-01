@@ -2,7 +2,6 @@ import React from 'react';
 
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
@@ -12,10 +11,9 @@ import './css/RequiredTrue.css'
 import get_cookie from './utils/get_cookie'
 
 
-class ModalButtonForm extends React.Component {
+class ModalEditButtonForm extends React.Component {
   constructor(props) {
     super(props);
-    this.currentPage = props.currentPage;
     this.icon = props.icon;
     this.formData = props.formData;
     this.handleClose = this.handleClose.bind(this);
@@ -41,7 +39,7 @@ class ModalButtonForm extends React.Component {
       formData: formData,
       formValidated: false,
       formErrors: '',
-      showAddModal: false,
+      showModal: false,
     };
     this.state = this.initalState;
   }
@@ -51,7 +49,7 @@ class ModalButtonForm extends React.Component {
   }
 
   handleShow() {
-    this.setState({ showAddModal: true });
+    this.setState({ showModal: true });
   }
 
   changeFormValues(event) {
@@ -180,7 +178,7 @@ class ModalButtonForm extends React.Component {
       <>
         <button onClick={this.handleShow} style={{ margin: '3px' }}>{this.icon ? this.icon : ''}{this.formData.titleLink}</button>
 
-        <Modal show={this.state.showAddModal} onHide={this.handleClose} backdrop='static'>
+        <Modal show={this.state.showModal} onHide={this.handleClose} backdrop='static'>
           <Modal.Header closeButton>
             <Modal.Title>{this.formData.titleForm}</Modal.Title>
           </Modal.Header>
@@ -212,4 +210,4 @@ class ModalButtonForm extends React.Component {
 }
 
 
-export default ModalButtonForm;
+export default ModalEditButtonForm;
