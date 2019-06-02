@@ -6,65 +6,104 @@ import AddCard from './AddCard';
 import IssuersCard from './IssuersCard';
 
 
-function BodyIssuers( {mainParent} ) {
-
-
-  const numbers = [1, 2, 3, 4, 5];
-
-
-  const addCardData = {
-    "titleCard": "Добавить эмитента",
-    "titleForm": "Добавить нового эмитента",
-    "url": "api/get_session_data/current.json",
-    "fields": [
-      {
-        "name": "longNameIssuer",
-        "label": "Полное название эмитента",
-        "required": true,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "shortNameIssuer",
-        "label": "Короткое название эмитента",
-        "required": true,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "urlIssuer",
-        "label": "Сайт эмитента",
-        "required": true,
-        "type": "url",
-        "value": "",
-      },
-      {
-        "name": "region",
-        "label": "Регион (субъект РФ)",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "address",
-        "label": "Адрес",
-        "required": false,
-        "type": "text",
-        "value": "",
-      },
-      {
-        "name": "comment",
-        "label": "Комментарий",
-        "required": false,
-        "type": "textarea",
-        "rows": "3",  // only for textarea type
-        "value": "",
-      },
-    ],
+class BodyIssuers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.mainParent = props.mainParent;
+    this.initialState = {cards: []};
+    this.state = this.initialState;
   }
 
-  const allCards = numbers.map((number) => <IssuersCard key={number} mainParent={number} />);
-  return <CardDeck><AddCard key="add" addCardData={addCardData} mainParent={mainParent}/>{allCards}</CardDeck>;
+  componentDidMount() {
+    this.reload();
+  }
+
+  reload() {
+    const me = this;
+    fetch("api/issuers.json").then((response) => {
+      if (response.status !== 200) {
+        me.resetState();
+        return;
+      }
+      return response.json()
+    }).then((response) => {
+      if (response) {
+        me.setState({cards: []});
+        me.setState({cards: response});
+      }
+    }).then((error) => {
+      if (error) {
+        me.resetState();
+        this.setState({error});
+      }
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+      me.resetState();
+    });
+  }
+
+  resetState() {
+    this.setState(this.initialState);
+  }
+
+  render() {
+    const me = this;
+    const addCardData = {
+      "titleCard": "Добавить эмитента",
+      "titleForm": "Добавить нового эмитента",
+      "url": "api/issuers.json",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Название компании",
+          "placeholder": 'ООО "Компания"',
+          "required": true,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "region",
+          "label": "Регион",
+          "fields": {"id": "url", "name": "munitipal_name"},
+          "required": false,
+          "type": "select",
+          "url": "api/region_fias.json?only_name=true",
+          "value": "",
+        },
+        {
+          "name": "ogrn",
+          "label": "ОГРН",
+          "placeholder": '1234567890123',
+          "required": false,
+          "type": "text",
+          "value": "",
+        },
+        {
+          "name": "site",
+          "label": "Сайт эмитента",
+          "required": false,
+          "type": "url",
+          "value": "",
+        },
+        {
+          "name": "comment",
+          "label": "Комментарий",
+          "required": false,
+          "type": "textarea",
+          "rows": "3",  // only for textarea type
+          "value": "",
+        },
+      ],
+    }
+
+    const allCards = this.state.cards.map((issuer) => <IssuersCard key={issuer.url} data={issuer} mainParent={me.mainParent} parent={me}/>);
+
+    return (
+      <>
+        <CardDeck><AddCard key="add" addCardData={addCardData} parent={me} mainParent={me.mainParent}/>{allCards}</CardDeck>
+      </>
+    );
+  }
 
 }
 

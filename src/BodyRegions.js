@@ -58,7 +58,7 @@ class BodyRegions extends React.Component {
     const me = this;
 
     const addCardData = {
-      "titleCard": "Добавить Регион",
+      "titleCard": "Добавить регион",
       "titleForm": "Добавить новый регион (субъект РФ)",
       "url": "api/region_fias.json",
       "fields": [

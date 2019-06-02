@@ -24,17 +24,9 @@ class RegionsCard extends React.Component {
       },
       editFormData: {
         "titleLink": "Редактировать",
-        "titleForm": "Добавить новый регион (субъект РФ)",
+        "titleForm": "Редактировать новый регион (субъект РФ)",
         "url": this.data.url,
         "fields": [
-          {
-            "name": "pk",
-            "label": "id",
-            "placeholder": "ID",
-            "required": true,
-            "type": "pk",
-            "value": this.data.pk,
-          },
           {
             "name": "munitipal_name",
             "label": "Муниципальное название",

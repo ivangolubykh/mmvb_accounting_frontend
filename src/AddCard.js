@@ -24,24 +24,68 @@ class AddCard extends React.Component {
     this.refForm = React.createRef();
     this.refErrors = React.createRef();
     let formData = {};
+    let selects = {};
     this.cardData.fields.forEach(function(item, i, arr) {
       formData[item.name] = item.value;
+      if (item.type === "select") {
+        selects[item.name] = {'url': item.url, fields: item.fields, 'data': [{"id": "", "name": "-"}]}
+      }
     });
     this.initalState = {
       formData: formData,
       formValidated: false,
       formErrors: '',
+      selects: selects,
       showAddModal: false,
     };
     this.state = this.initalState;
   }
 
-  handleClose() {
-    this.setState(this.initalState);
-  }
+  componentDidMount() {
+    const me = this;
+    Object.keys(me.state.selects).forEach(function(item, i, arr) {
+      fetch(me.state.selects[item].url).then((response) => {
+        if (response.status !== 200) {
+          me.resetState();
+          return;
+        }
+        return response.json();
+      }).then((response) => {
+        if (response) {
+          let data = [{"id": "", "name": "-"}];
+          response.forEach(function(data_item, i, arr) {
+            data.push({"id": data_item[me.state.selects[item].fields.id], "name": data_item[me.state.selects[item].fields.name]});
+          });
 
-  handleShow() {
-    this.setState({ showAddModal: true });
+          let new_selects = {};
+          Object.keys(me.state.selects).forEach(function(async_select_item, i, arr) {
+            if (async_select_item === item) {
+              new_selects[item] = {
+                "url": me.state.selects[item].url,
+                "fields": me.state.selects[item].fields,
+                "data": data,
+              };
+            }
+            else {
+              new_selects[item] = {
+                "url": me.state.selects[item].url,
+                "fields": me.state.selects[item].fields,
+                "data": me.state.selects[item].data,
+              };
+            }
+          });
+          me.setState({selects: new_selects});
+        }
+      }).then((error) => {
+        if (error) {
+          me.resetState();
+          this.setState({error});
+        }
+      }).catch(function(ex) {
+        console.log('parsing failed', ex);
+        me.resetState();
+      })
+    });
   }
 
   changeFormValues(event) {
@@ -67,6 +111,14 @@ class AddCard extends React.Component {
       let formErrors = errrors.map((error) => <div key={error[0]}>{error[1]}</div>);
       this.setState({formErrors: formErrors});
     }
+  }
+
+  handleClose() {
+    this.setState(this.initalState);
+  }
+
+  handleShow() {
+    this.setState({ showAddModal: true });
   }
 
   handleSubmit(event) {
@@ -152,6 +204,18 @@ class AddCard extends React.Component {
           rows={ fieldData.rows || "3" }
           value={this.state.formData[fieldData.name]}
         />
+      );
+    }
+    else if (fieldData.type === 'select') {
+      let options = this.state.selects[fieldData.name].data.map((data) => <option key={data['id']} value={data['id']}>{data["name"]}</option>);
+      formControl = (
+        <Form.Control
+          onChange={e => this.changeFormValues(e)}
+          required={ fieldData.required || ''}
+          as="select"
+        >
+          {options}
+        </Form.Control>
       );
     }
 
