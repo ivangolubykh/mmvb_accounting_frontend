@@ -36,13 +36,13 @@ class IssuersCard extends React.Component {
             "value": this.data.name,
           },
           {
-            "name": "region",
+            "name": "regions",
             "label": "Регион",
             "fields": {"id": "url", "name": "munitipal_name"},
             "required": false,
             "type": "select",
             "url": "api/region_fias.json?only_name=true",
-            "value": this.data.region,
+            "value": this.data.regions,
           },
           {
             "name": "ogrn",

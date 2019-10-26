@@ -36,7 +36,7 @@ const addCardData = {
 class MainParent extends React.Component {
   constructor(props) {
     super(props);
-    initialState["currentPage"] = "#region"
+    initialState["currentPage"] = "#regions"
     this.state = initialState;
   }
 

@@ -36,7 +36,7 @@ class MainParent extends React.Component {
   constructor(props) {
     super(props);
     this.currentPage = "#";
-    initialState["currentPage"] = "#region"
+    initialState["currentPage"] = "#regions"
     this.state = initialState;
   }
 

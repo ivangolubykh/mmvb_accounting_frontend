@@ -62,7 +62,7 @@ class BodyIssuers extends React.Component {
           "value": "",
         },
         {
-          "name": "region",
+          "name": "regions",
           "label": "Регион",
           "fields": {"id": "url", "name": "munitipal_name"},
           "required": false,

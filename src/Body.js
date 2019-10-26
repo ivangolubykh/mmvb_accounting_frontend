@@ -11,7 +11,7 @@ function Body( {mainParent} ) {
     if (mainParent.state.currentPage === "#issuers") {
       return <main className="container-fluid flex-grow-1"><BodyIssuers mainParent={mainParent} /></main>;
     }
-    if (mainParent.state.currentPage === "#region") {
+    if (mainParent.state.currentPage === "#regions") {
       return <main className="container-fluid flex-grow-1"><BodyRegions mainParent={mainParent} /></main>;
     }
   }
