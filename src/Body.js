@@ -2,12 +2,16 @@ import React from 'react';
 
 import Alert from 'react-bootstrap/Alert';
 
+import BodyBrokerageAccounts from './BodyBrokerageAccounts';
 import BodyIssuers from './BodyIssuers';
 import BodyRegions from './BodyRegions';
 
 
 function Body( {mainParent} ) {
   if (mainParent.state.isLogin === true) {
+    if (mainParent.state.currentPage === "#brokerage_accounts") {
+      return <main className="container-fluid flex-grow-1"><BodyBrokerageAccounts mainParent={mainParent} /></main>;
+    }
     if (mainParent.state.currentPage === "#issuers") {
       return <main className="container-fluid flex-grow-1"><BodyIssuers mainParent={mainParent} /></main>;
     }

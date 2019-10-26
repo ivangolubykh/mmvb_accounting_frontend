@@ -29,8 +29,9 @@ function Header( {mainParent} ) {
           <Nav.Link  href="#home" onClick={() => mainParent.setState({currentPage: "#home"})}>Главная</Nav.Link>
           <Nav.Link href="#link" onClick={() => mainParent.setState({currentPage: "#link"})}>Аналитика</Nav.Link>
           <NavDropdown title="Управление данными" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#issuers" onClick={(e) => mainParent.setState({currentPage: "#issuers"})}>Эмитетны</NavDropdown.Item>
-            <NavDropdown.Item href="#region" onClick={(e) => mainParent.setState({currentPage: "#region"})}>Регионы (субъекты РФ)</NavDropdown.Item>
+            <NavDropdown.Item href="#issuers" onClick={(e) => mainParent.setState({currentPage: "#issuers"})}>Эмитенты</NavDropdown.Item>
+            <NavDropdown.Item href="#regions" onClick={(e) => mainParent.setState({currentPage: "#regions"})}>Регионы (субъекты РФ)</NavDropdown.Item>
+            <NavDropdown.Item href="#brokerage_accounts" onClick={(e) => mainParent.setState({currentPage: "#brokerage_accounts"})}>Брокерские счета</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2" onClick={(e) => mainParent.setState({currentPage: "#action/3.2"})}>Ещё пункт меню</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#help" onClick={(e) => mainParent.setState({currentPage: "#help"})}>Помощь</NavDropdown.Item>
