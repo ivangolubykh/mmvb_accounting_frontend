@@ -72,7 +72,7 @@ class BodyBrokerageAccounts extends React.Component {
       ],
     }
 
-    const allCards = this.state.cards.map((issuer) => <BrokerageAccountsCard key={issuer.url} data={issuer} mainParent={me.mainParent} parent={me}/>);
+    const allCards = this.state.cards.map((account) => <BrokerageAccountsCard key={account.url} data={account} mainParent={me.mainParent} parent={me}/>);
 
     return (
       <>
