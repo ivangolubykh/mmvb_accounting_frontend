@@ -32,7 +32,7 @@ function Header( {mainParent} ) {
             <NavDropdown.Item href="#issuers" onClick={(e) => mainParent.setState({currentPage: "#issuers"})}>Эмитенты</NavDropdown.Item>
             <NavDropdown.Item href="#regions" onClick={(e) => mainParent.setState({currentPage: "#regions"})}>Регионы (субъекты РФ)</NavDropdown.Item>
             <NavDropdown.Item href="#brokerage_accounts" onClick={(e) => mainParent.setState({currentPage: "#brokerage_accounts"})}>Брокерские счета</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2" onClick={(e) => mainParent.setState({currentPage: "#action/3.2"})}>Ещё пункт меню</NavDropdown.Item>
+            <NavDropdown.Item href="#securities_types" onClick={(e) => mainParent.setState({currentPage: "#securities_types"})}>Тип ценных бумаг</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#help" onClick={(e) => mainParent.setState({currentPage: "#help"})}>Помощь</NavDropdown.Item>
           </NavDropdown>

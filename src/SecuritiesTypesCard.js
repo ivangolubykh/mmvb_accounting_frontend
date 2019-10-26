@@ -6,7 +6,7 @@ import ModalDelButtonForm from './ModalDelButtonForm';
 import ModalEditButtonForm from './ModalEditButtonForm';
 
 
-class BrokerageAccountsCard extends React.Component {
+class SecuritiesTypesCard extends React.Component {
   constructor(props) {
     super(props);
     this.currentPage = props.mainParent.state.currentPage;
@@ -18,19 +18,19 @@ class BrokerageAccountsCard extends React.Component {
       showEditModal: false,
       delFormData: {
         "titleLink": "Удалить",
-        "titleForm": "Удалить брокерский счёт из БД",
+        "titleForm": "Удалить тип ценных бумаг из БД",
         "url": this.data.url,
         "cardName": this.data.name,
       },
       editFormData: {
         "titleLink": "Редактировать",
-        "titleForm": "Брокерский счёт",
+        "titleForm": "Тип ценных бумаг",
         "url": this.data.url,
         "fields": [
           {
             "name": "name",
-            "label": "Название брокерского счёта",
-            "placeholder": "ИИС",
+            "label": "Название типа ценных бумаг",
+            "placeholder": "Облигации",
             "required": true,
             "type": "text",
             "value": this.data.name,
@@ -66,7 +66,7 @@ class BrokerageAccountsCard extends React.Component {
           <Card.Title>{this.data.name}</Card.Title>
         </Card.Header>
           <Card.Body>
-            <Card.Subtitle className="mb-2 text-muted">Брокерский счёт: {this.data.region_name}</Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted">Тип ценных бумаг: {this.data.region_name}</Card.Subtitle>
             <Card.Text>{this.data.comment}</Card.Text>
           </Card.Body>
           <Card.Footer className="text-muted">
@@ -90,4 +90,4 @@ class BrokerageAccountsCard extends React.Component {
 }
 
 
-export default BrokerageAccountsCard;
+export default SecuritiesTypesCard;

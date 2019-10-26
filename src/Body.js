@@ -5,6 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import BodyBrokerageAccounts from './BodyBrokerageAccounts';
 import BodyIssuers from './BodyIssuers';
 import BodyRegions from './BodyRegions';
+import BodySecuritiesTypes from './BodySecuritiesTypes';
 
 
 function Body( {mainParent} ) {
@@ -17,6 +18,9 @@ function Body( {mainParent} ) {
     }
     if (mainParent.state.currentPage === "#regions") {
       return <main className="container-fluid flex-grow-1"><BodyRegions mainParent={mainParent} /></main>;
+    }
+    if (mainParent.state.currentPage === "#securities_types") {
+      return <main className="container-fluid flex-grow-1"><BodySecuritiesTypes mainParent={mainParent} /></main>;
     }
   }
 
