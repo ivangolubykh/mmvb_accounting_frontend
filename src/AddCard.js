@@ -60,14 +60,14 @@ class AddCard extends React.Component {
           let new_selects = {};
           Object.keys(me.state.selects).forEach(function(async_select_item, i, arr) {
             if (async_select_item === item) {
-              new_selects[item] = {
+              new_selects[async_select_item] = {
                 "url": me.state.selects[item].url,
                 "fields": me.state.selects[item].fields,
                 "data": data,
               };
             }
             else {
-              new_selects[item] = {
+              new_selects[async_select_item] = {
                 "url": me.state.selects[item].url,
                 "fields": me.state.selects[item].fields,
                 "data": me.state.selects[item].data,

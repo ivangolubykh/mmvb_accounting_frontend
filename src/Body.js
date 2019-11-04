@@ -3,6 +3,7 @@ import React from 'react';
 import Alert from 'react-bootstrap/Alert';
 
 import BodyBrokerageAccounts from './BodyBrokerageAccounts';
+import BodyIssueOfSecurities from './BodyIssueOfSecurities';
 import BodyIssuers from './BodyIssuers';
 import BodyRegions from './BodyRegions';
 import BodySecuritiesTypes from './BodySecuritiesTypes';
@@ -12,6 +13,9 @@ function Body( {mainParent} ) {
   if (mainParent.state.isLogin === true) {
     if (mainParent.state.currentPage === "#brokerage_accounts") {
       return <main className="container-fluid flex-grow-1"><BodyBrokerageAccounts mainParent={mainParent} /></main>;
+    }
+    if (mainParent.state.currentPage === "#issue_of_securities") {
+      return <main className="container-fluid flex-grow-1"><BodyIssueOfSecurities mainParent={mainParent} /></main>;
     }
     if (mainParent.state.currentPage === "#issuers") {
       return <main className="container-fluid flex-grow-1"><BodyIssuers mainParent={mainParent} /></main>;
